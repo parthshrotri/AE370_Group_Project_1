@@ -1,1 +1,1 @@
-# AE370_Group_Project_1
+# AE370 Group Project 1
