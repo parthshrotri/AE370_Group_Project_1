@@ -17,7 +17,8 @@ class Forces:
         '''
         net_force = np.zeros((3, 3))
         for body in self.system_bodies:
-            net_force += self._get_gravitational_force(body)
+            if body != self:
+                net_force += self._get_gravitational_force(body)
 
         return net_force
     
@@ -55,18 +56,4 @@ class Forces:
         '''
         
         return (body.state[0] - self.state[0]) / self._get_distance(body)
-    
-    def _spherical_to_cartesian(self, r, theta, phi):
-        '''Converts spherical coordinates to cartesian coordinates'''
-        x = r * np.sin(phi) * np.cos(theta)
-        y = r * np.sin(phi) * np.sin(theta)
-        z = r * np.cos(phi)
-        return np.array([x, y, z])
-    
-    def _cartesian_to_spherical(self, x, y, z):
-        '''Converts cartesian coordinates to spherical coordinates'''
-        r = np.sqrt(x**2 + y**2 + z**2)
-        theta = np.arctan(y / x)
-        phi = np.arccos(z / r)
-        return np.array([r, theta, phi])
     
