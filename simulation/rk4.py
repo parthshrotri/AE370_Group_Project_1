@@ -62,7 +62,6 @@ def rk4_ivp(objects:list, t_start:float, t_end:float, t_step:float) -> None:
     '''
     t = t_start
     while t < t_end:
-        
         # Store the net force vector on each object
         force_list = []
         for i in range(objects):
