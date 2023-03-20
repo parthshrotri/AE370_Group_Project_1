@@ -2,11 +2,11 @@ import numpy as np
 
 class Forces:
     G = 6.6743e-11 # Gravitational constant
-    body_mass = 0 # Mass of the body
+    body = None # Body object
     system_bodies = [] # List of bodies (Body object) in the system not including the current one
     
-    def __init__(self, body_mass, system_bodies):
-        self.body_mass = body_mass
+    def __init__(self, body, system_bodies):
+        self.body = body
         self.system_bodies = system_bodies
     
     def get_forces(self) -> np.ndarray:
@@ -17,7 +17,7 @@ class Forces:
         '''
         net_force = np.zeros((3, 3))
         for body in self.system_bodies:
-            if body != self:
+            if body != self.body:
                 net_force += self._get_gravitational_force(body)
 
         return net_force
@@ -32,7 +32,7 @@ class Forces:
             np.array: The gravitational force on the body from another body
         '''
         
-        return (self.G * self.body_mass * body.mass / self._get_distance(body)**2) * self._get_unit_vector(body)
+        return (self.G * self.body.mass * body.mass / self._get_distance(body)**2) * self._get_unit_vector(body)
     
     def _get_distance(self, body):
         '''Returns the distance between the body and another body

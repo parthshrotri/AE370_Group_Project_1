@@ -16,7 +16,7 @@ class Body():
         self.mass = mass
         self.state = state
         self.force = Forces(self.mass, system_bodies=system_bodies)
-        
+    
     def get_position(self):
         return self.state[0]
     
