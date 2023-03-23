@@ -70,7 +70,7 @@ class Body():
         self.mass = mass
         self.state = state
     
-    def create_force(self, system_bodies):
+    def create_force(self, system_bodies):                              #Review and change
         self.force = Forces(self.mass, system_bodies=system_bodies)
     
     def get_position(self):
