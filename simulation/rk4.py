@@ -19,7 +19,7 @@ class Simulator:
         Returns:
             velocity (np.ndarray): The updated velocity of the object
         '''
-        a = force / object.mass
+        a = force / object.body_mass
         k1 = a
         k2 = a + 0.5 * t_step * k1
         k3 = a + 0.5 * t_step * k2
@@ -53,7 +53,8 @@ class Simulator:
         object.set_acceleration(a)
         object.set_velocity(v)
         object.set_position(p)
-        object.store_position = object.store_position.append(p)
+        print(p)
+        object.store_position.append(p[0].tolist())
         
     def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float) -> None:
         ''' Perform the RK4 algorithm for a system of objects
