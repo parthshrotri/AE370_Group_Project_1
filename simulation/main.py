@@ -26,4 +26,4 @@ day_in_sec = 24*60*60
 sim.rk4_ivp([sun, earth], 0, 400 * day_in_sec, day_in_sec)
 print(earth.get_position())
 
-plot.plot(earth)
+plot.plot()

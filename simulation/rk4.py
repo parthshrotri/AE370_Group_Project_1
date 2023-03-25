@@ -53,7 +53,8 @@ class Simulator:
         object.set_acceleration(a)
         object.set_velocity(v)
         object.set_position(p)
-        object.store_position.append(p.tolist())
+        print(p)
+        object.store_position.append(p[0].tolist())
         
     def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float) -> None:
         ''' Perform the RK4 algorithm for a system of objects
