@@ -1,8 +1,14 @@
 import numpy as np
-from ..dynamics.body import Body
+import sys
+import os
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
+
+from dynamics.body import Body
+from properties import prop
 
 class Simulator:
-    def rk4_v_step(self, object:Body, force:np.ndarray, t_step:float) -> tuple(np.ndarray, np.ndarray):
+    def rk4_v_step(self, object:Body, force:np.ndarray, t_step:float):
         ''' Perform a single step of the RK4 algorithm for the velocity of an object
         
         Args:
@@ -47,6 +53,7 @@ class Simulator:
         object.set_acceleration(a)
         object.set_velocity(v)
         object.set_position(p)
+        object.store_position = object.store_position.append(p)
         
     def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float) -> None:
         ''' Perform the RK4 algorithm for a system of objects
@@ -64,10 +71,14 @@ class Simulator:
         while t < t_end:
             # Store the net force vector on each object
             force_list = []
-            for i in range(objects):
+            for i in range(len(objects)):
                 force_list.append(objects[i].get_forces())
 
-            for i in range(objects):
-                self.rk4_p_step(objects[i], force_list[i], t_step)
-            t += t_step
+            for i in range(len(objects)):
+                if objects[i].calculate_forces == True:
+                    self.rk4_p_step(objects[i], force_list[i], t_step)
+                    t += t_step
         
+        for object in objects:                              
+            filename = os.path.join(os.path.dirname(__file__), '../output/') + object.name + '_trajectory'
+            np.save(filename, np.array(object.store_position), True)        

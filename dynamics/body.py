@@ -4,11 +4,25 @@ class Body():
     G = 6.6743e-11 # Gravitational constant
     body_mass = 0 # Mass of the body
     system_bodies = [] # List of bodies (Body object) in the system not including the current one
-    
-    def __init__(self, body_mass, system_bodies):
+    # Position, velocity, acceleration of the body
+    # These values are represented in Heliocentric cartesian coordinates
+    state = np.zeros((3, 3)) 
+    ''' State matrix is a 3x3 matrix with the following structure:
+        [[x, y, z], 
+        [vx, vy, vz], 
+        [ax, ay, az]]
+    '''
+    name = ''
+    def __init__(self, body_mass, state, calculate_forces=True, name='Body'):
         self.body_mass = body_mass
-        self.system_bodies = system_bodies
+        self.state = state
+        self.calculate_forces = calculate_forces
+        self.store_position = []
+        self.name = name
     
+    def set_system_bodies(self, bodies):
+        self.system_bodies = bodies
+         
     def get_forces(self) -> np.ndarray:
         '''Returns the net gravitational force on the body
         
@@ -56,22 +70,6 @@ class Body():
         '''
         
         return (body.state[0] - self.state[0]) / self._get_distance(body)
-
-    # Position, velocity, acceleration of the body
-    # These values are represented in Heliocentric cartesian coordinates
-    state = np.zeros((3, 3)) 
-    ''' State matrix is a 3x3 matrix with the following structure:
-        [[x, y, z], 
-        [vx, vy, vz], 
-        [ax, ay, az]]
-    '''
-    
-    def __init__(self, mass, state):
-        self.mass = mass
-        self.state = state
-    
-    def create_force(self, system_bodies):                              #Review and change
-        self.force = Forces(self.mass, system_bodies=system_bodies)
     
     def get_position(self):
         return self.state[0]
