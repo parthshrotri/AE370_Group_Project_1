@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.abspath(
 
 from dynamics.body import Body
 from properties import prop
-
 # Define system bodies
 sun = Body(prop.mass_sun, [[0, 0, 0], [0, 0, 0], [0, 0, 0]], False, 'Sun')
 # mercury = Body(prop.mass_mercury,)
