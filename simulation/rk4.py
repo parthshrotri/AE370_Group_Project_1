@@ -53,8 +53,8 @@ class Simulator:
         object.set_acceleration(a)
         object.set_velocity(v)
         object.set_position(p)
-        print(p)
-        object.store_position.append(p[0].tolist())
+        # print(object.get_acceleration())
+        object.store_position.append(p.tolist())
         
     def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float) -> None:
         ''' Perform the RK4 algorithm for a system of objects
@@ -78,7 +78,7 @@ class Simulator:
             for i in range(len(objects)):
                 if objects[i].calculate_forces == True:
                     self.rk4_p_step(objects[i], force_list[i], t_step)
-                    t += t_step
+            t += t_step
         
         for object in objects:                              
             filename = os.path.join(os.path.dirname(__file__), '../output/') + object.name + '_trajectory'

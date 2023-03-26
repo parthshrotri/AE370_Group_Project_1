@@ -1,7 +1,7 @@
 import numpy as np
 
 class Body():
-    G = 6.6743e-11 # Gravitational constant
+    G = 6.6743e-11*(24*60*60)**2 # Gravitational constant
     body_mass = 0 # Mass of the body
     system_bodies = [] # List of bodies (Body object) in the system not including the current one
     # Position, velocity, acceleration of the body
@@ -29,11 +29,12 @@ class Body():
         Returns:
             net_force (np.array): Total gravitational force on the body
         '''
-        net_force = np.zeros((3, 3))
+        net_force = np.zeros(3)
         for body in self.system_bodies:
             if body != self:
+                # print('Calculating force on', self.name, 'from', body.name)
                 net_force += self._get_gravitational_force(body)
-
+            # print(net_force)
         return net_force
     
     def _get_gravitational_force(self, body) -> np.ndarray:
@@ -45,8 +46,8 @@ class Body():
         Returns:
             np.array: The gravitational force on the body from another body
         '''
-        
-        return (self.G * self.body_mass * body.mass / self._get_distance(body)**2) * self._get_unit_vector(body)
+        # print((self.G * self.body_mass * body.body_mass) / (self._get_distance(body)**2) * self._get_unit_vector(body))
+        return (self.G * self.body_mass * body.body_mass) / (self._get_distance(body)**2) * self._get_unit_vector(body)
     
     def _get_distance(self, body):
         '''Returns the distance between the body and another body
@@ -57,6 +58,7 @@ class Body():
         Returns:
             float: The distance between the body and another body
         '''
+        # print(np.linalg.norm(body.state[0] - self.state[0]))
         return np.linalg.norm(body.state[0] - self.state[0])
     
     def _get_unit_vector(self, body):
@@ -68,7 +70,6 @@ class Body():
         Returns:
             np.array: The unit vector from the body to another body
         '''
-        
         return (body.state[0] - self.state[0]) / self._get_distance(body)
     
     def get_position(self):

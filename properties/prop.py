@@ -34,6 +34,6 @@ mass_uranus = 86.811e24 # Mass of Uranus in kg
 # from: https://nssdc.gsfc.nasa.gov/planetary/factsheet/neptunefact.html
 mass_neptune = 102.409e24 # Mass of Neptune in kg
 
-# Pluto properties
-# from: https://nssdc.gsfc.nasa.gov/planetary/factsheet/plutofact.html
-mass_neptune = 0.01303e24 # Mass of Pluto in kg
+# Moon properties
+# from: https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html
+mass_moon = 0.07346e25 # Mass of Moon in kg
