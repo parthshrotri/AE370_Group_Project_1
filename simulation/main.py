@@ -29,4 +29,4 @@ sim = Simulator()
 sim.rk4_ivp([sun, earth], 0, 360, 60/(24*60*60))
 # sim.rk4_ivp([sun, earth], 0, 1*day_in_sec, day_in_sec)
 
-plot.plot(earth)
+plot.plot_traj(earth)
