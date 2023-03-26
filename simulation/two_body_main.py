@@ -27,10 +27,12 @@ def two_body_problem(days = 365, dt = 60, plt = False):
     t_start = time.time()
     sim.rk4_ivp(system_bodies, 0, days, dt/(seconds_per_day))
     t_end = time.time() - t_start
-    print(f"Time: {t_end:.2f}")
+    print(f'Run at dt = {dt:.2f} completed in {t_end:.2f}sec')
 
     if plt == True:
-        plot.plot([body.name for body in system_bodies if body.name != 'sun'], days)
+        plot.plot_traj([body.name for body in system_bodies if body.name != 'sun'], days)
+    
+    return t_end
 
 if __name__ == '__main__':
     two_body_problem(plt=True)

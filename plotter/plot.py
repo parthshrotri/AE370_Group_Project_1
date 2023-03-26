@@ -13,7 +13,11 @@ def plot_traj(bodies: list, days=20*365):
         x = appx_trajectory[:,0]
         y = appx_trajectory[:,1]
         z = appx_trajectory[:,2]
-        ax.plot3D(x,y,z,'-',label= body + ' Approximated Trajectory')
+        if not body.startswith('asteroid'):
+            ax.plot3D(x,y,z,'-',label= body + ' Approximated Trajectory')
+        else:
+            ax.plot3D(x,y,z,'-')
+
         ufinal = np.array([x[-1],y[-1],z[-1]])
         if body in planet_list:
             true_trajectory = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files', body + '_trajectory.npy'))
@@ -32,8 +36,6 @@ def plot_traj(bodies: list, days=20*365):
 
 def error(bodies: list, days=20*365):
     planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
-    fig = plt.figure(figsize=(8, 10), tight_layout=True)
-    ax = fig.add_subplot( 111 , projection = '3d')
     err_vals = []
     for body in bodies:
         appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', body + '_trajectory.npy'))
@@ -49,8 +51,8 @@ def error(bodies: list, days=20*365):
             ufinal_baseline = np.array([x_true[-1],y_true[-1],z_true[-1]])
             err = np.linalg.norm(ufinal - ufinal_baseline)/np.linalg.norm(ufinal_baseline)
             err_vals.append(err)
-        return err_vals
+    return err_vals
 
 if __name__ == '__main__':
-    plot_traj(['earth', 'moon'])
+    plot_traj(['asteroid_' + str(i) for i in range(30)])
 # plot(['earth', 'jwst'])

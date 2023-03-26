@@ -7,6 +7,8 @@ sys.path.insert(0, os.path.abspath(
 from dynamics.body import Body
 from properties import prop
 
+from tqdm import tqdm
+
 class Simulator:
     def rk4_v_step(self, object:Body, force:np.ndarray, t_step:float):
         ''' Perform a single step of the RK4 algorithm for the velocity of an object
@@ -69,7 +71,7 @@ class Simulator:
             None
         '''
         t = t_start
-        while t < t_end:
+        for t in tqdm(np.arange(t_start, t_end, t_step)):
             # Store the net force vector on each object
             force_list = []
             for i in range(len(objects)):

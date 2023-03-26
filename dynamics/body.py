@@ -1,7 +1,7 @@
 import numpy as np
 
 class Body():
-    G = 6.6743e-11*(24*60*60)**2 # Gravitational constant
+    G = 0# 6.6743e-11*(24*60*60)**2 # Gravitational constant
     body_mass = 0 # Mass of the body
     system_bodies = [] # List of bodies (Body object) in the system not including the current one
     # Position, velocity, acceleration of the body
