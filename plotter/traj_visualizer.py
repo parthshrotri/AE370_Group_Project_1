@@ -23,6 +23,15 @@ pts_per_frame = 1000
 
 def animator(num, body_names, trajectories):
     ax.clear()
+    ax.set_xticks(np.linspace(-2E11, 6E11, 9).tolist())
+    ax.set_yticks(np.linspace(-2E11, 8E11, 11).tolist())
+    ax.set_zticks(np.linspace(-0.5E11, 2.5E11, 7).tolist())
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_zlabel('z', rotation = 0)
+    ax.set_xlim(-2E11, 6E11)
+    ax.set_ylim(-2E11, 8E11)
+    ax.set_zlim(-1E11, 3E11)
     for body_name in body_names:
         x_body = trajectories[body_name][0:num*pts_per_frame+1][:,0]
         y_body = trajectories[body_name][0:num*pts_per_frame+1][:,1]
