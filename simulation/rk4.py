@@ -78,7 +78,6 @@ class Simulator:
                 position = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files/') + object.name + '_trajectory.npy')
                 positions.append(position)
         positions = np.array(positions)
-        print(positions.shape)
         for t in tqdm(np.arange(t_start, t_end, t_step)):
             # Store the net force vector on each object
             force_list = []
@@ -89,8 +88,8 @@ class Simulator:
                 if objects[i].calculate_forces == True:
                     self.rk4_p_step(objects[i], force_list[i], t_step)
                 elif objects[i].name != 'sun':
-                    position = positions[:,i]
-                    objects[i].store_position.append(position[int(t/seconds_per_day)])
+                    position = positions[:,i][int(t/seconds_per_day)][0:3]
+                    objects[i].store_position.append(position)
             t += t_step
         
         path = os.path.join(os.path.dirname(__file__), '../output/')

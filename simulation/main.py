@@ -65,7 +65,6 @@ for i in range(num_asteroids):
     
     # asteroid_mass = asteroid_average_mass * (1+(asteroid_mass_distribution*(np.random.random() - 0.5)))
     # asteroid = Body(asteroid_mass, np.array([asteroid_initial_position, asteroid_initial_velocity*seconds_per_day, [0,0,0]]), True, 'asteroid_' + str(i))
-    print(type(asteroids_init_pos[i]))
     asteroid = Body(asteroid_masses[i], np.array([asteroids_init_pos[i], asteroids_init_vel[i]*seconds_per_day, [0,0,0]]), True, 'asteroid_' + str(i))
     system_bodies.append(asteroid)
 

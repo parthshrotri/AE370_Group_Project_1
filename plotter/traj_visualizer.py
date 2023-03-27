@@ -18,27 +18,20 @@ def get_trajectories_of_bodies():
     return body_names, appx_trajectories
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
-ax = fig.add_subplot( 111 , projection = '3d')
-       
-def animator(frame):
-    body_names, trajectories = get_trajectories_of_bodies()
-    num_indexes = len(trajectories[body_names[0]][:,0])
-    # print(trajectories[body_names[0]][:9,0])
-    line = []
-    for index in range (num_indexes):
-        # time.sleep(.1)
-        # ax.clear()
-        for body_name in body_names:
-            # print(body_name)
-            # print(trajectories[body_name])
-            x_body = trajectories[body_name][:index+1,0]
-            y_body = trajectories[body_name][:index+1,1]
-            z_body = trajectories[body_name][:index+1,2]
-            line_addition, = ax.plot(x_body, y_body, z_body, label = body_name)
-            line.append(line_addition)
-    print(line)
-    return line,
+ax = fig.add_subplot(projection = '3d')
+pts_per_frame = 1000
 
-animation = FuncAnimation(fig, animator, interval=500)
-plt.show()
-# animator()
+def animator(num, body_names, trajectories):
+    ax.clear()
+    for body_name in body_names:
+        x_body = trajectories[body_name][0:num*pts_per_frame+1][:,0]
+        y_body = trajectories[body_name][0:num*pts_per_frame+1][:,1]
+        z_body = trajectories[body_name][0:num*pts_per_frame+1][:,2]
+        ax.plot(x_body, y_body, z_body, '.', label = body_name)
+    ax.plot3D(0, 0, 0, '.', label='Sun', color='blue')
+    ax.legend()
+
+body_names, trajectories = get_trajectories_of_bodies()
+N = trajectories[body_names[0]].shape[0]
+animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories), frames = N//pts_per_frame, interval=1, repeat=False)
+animation.save(os.path.join(directory, 'plots and graphs', 'orbits.gif'), writer='Pillow', fps=100)
