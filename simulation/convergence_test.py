@@ -9,7 +9,7 @@ def convergence_2b(days, tstep_vals):
     time_vals = []
     for tstep in tstep_vals:
         time_vals.append(two_body_problem(days, tstep))
-        earth_err_vals.append(plot.error(['earth'])[0])
+        earth_err_vals.append(plot.error(['earth'], 'two_body_test', days)[0])
     return earth_err_vals, time_vals
     
 def convergence_3b(days, tstep_vals):
@@ -18,7 +18,7 @@ def convergence_3b(days, tstep_vals):
     time_vals = []
     for tstep in tstep_vals:
         time_vals.append(three_body_problem(days, tstep))
-        errors = plot.error(['earth' , 'moon'], days)
+        errors = plot.error(['earth' , 'moon'], 'three_body_test', days)
         earth_err_vals.append(errors[0])
         moon_err_vals.append(errors[1])
     return earth_err_vals, moon_err_vals, time_vals

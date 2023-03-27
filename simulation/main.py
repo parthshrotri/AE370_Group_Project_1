@@ -72,6 +72,6 @@ for i in range(num_asteroids):
 for body in system_bodies:
     body.set_system_bodies(system_bodies)
 sim = Simulator()
-sim.rk4_ivp(system_bodies, 0, days, dt/seconds_per_day)
+sim.rk4_ivp(system_bodies, 0, days, dt/seconds_per_day, 'asteroid_test')
 # sim.rk4_ivp([sun, earth], 0, 1*day_in_sec, day_in_sec)
 # plot.plot_traj([body.name for body in system_bodies if body.name != 'sun'])

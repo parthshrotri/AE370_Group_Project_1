@@ -6,11 +6,11 @@ from matplotlib.animation import FuncAnimation
 
 directory = os.path.join(os.path.dirname(__file__),'..', 'output')
 
-def get_trajectories_of_bodies():
+def get_trajectories_of_bodies(file_loc: str):
     os.chdir(directory)
     body_names = []
     appx_trajectories = {}
-    for file in glob.glob("*.npy"):
+    for file in glob.glob(file_loc+"\*.npy"):
         appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', file))
         body = file.replace('_trajectory.npy', '')
         body_names.append(body)
@@ -19,7 +19,7 @@ def get_trajectories_of_bodies():
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
-pts_per_frame = 1000
+pts_per_frame = 10000
 
 def animator(num, body_names, trajectories, graph_limits):
     ax.clear()
@@ -36,11 +36,11 @@ def animator(num, body_names, trajectories, graph_limits):
         x_body = trajectories[body_name][0:num*pts_per_frame+1][:,0]
         y_body = trajectories[body_name][0:num*pts_per_frame+1][:,1]
         z_body = trajectories[body_name][0:num*pts_per_frame+1][:,2]
-        ax.plot(x_body, y_body, z_body, '.', label = body_name)
+        ax.plot(x_body, y_body, z_body, '-', label = body_name, linewidth = 1)
     ax.plot3D(0, 0, 0, '.', label='Sun', color='blue')
     ax.legend()
 
-body_names, trajectories = get_trajectories_of_bodies()
+body_names, trajectories = get_trajectories_of_bodies('asteroid_test')
 N = trajectories[body_names[0]].shape[0]
 x_all, y_all, z_all = [], [], []
 for body_name in body_names:
@@ -49,4 +49,4 @@ for body_name in body_names:
     z_all = z_all + trajectories[body_name][:, 2].tolist()
 graph_limits = [[0.5E11 * math.floor(1.2*min(x_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(x_all)/0.5E11)], [0.5E11 * math.floor(1.2*min(y_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(y_all)/0.5E11)], [0.5E11 * math.floor(1.2*min(z_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(z_all)/0.5E11)]]
 animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories, graph_limits), frames = N//pts_per_frame, interval=1, repeat=False)
-animation.save(os.path.join(directory, 'plots and graphs', 'orbits.gif'), writer='Pillow', fps=100)
+animation.save(os.path.join(directory, 'plots and graphs', 'asteroid.gif'), writer='Pillow', fps=100)
