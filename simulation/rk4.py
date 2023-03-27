@@ -71,6 +71,14 @@ class Simulator:
             None
         '''
         t = t_start
+        seconds_per_day = 24*60*60
+        positions = []
+        for object in objects:
+            if object.name != 'sun' and object.calculate_forces == False:
+                position = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files/') + object.name + '_trajectory.npy')
+                positions.append(position)
+        positions = np.array(positions)
+        print(positions.shape)
         for t in tqdm(np.arange(t_start, t_end, t_step)):
             # Store the net force vector on each object
             force_list = []
@@ -80,8 +88,19 @@ class Simulator:
             for i in range(len(objects)):
                 if objects[i].calculate_forces == True:
                     self.rk4_p_step(objects[i], force_list[i], t_step)
+                elif objects[i].name != 'sun':
+                    position = positions[:,i]
+                    objects[i].store_position.append(position[int(t/seconds_per_day)])
             t += t_step
         
+        path = os.path.join(os.path.dirname(__file__), '../output/')
+        test=os.listdir(path)
+
+        for item in test:
+            if item.endswith(".npy"):
+                os.remove(os.path.join(path, item))    
+                   
         for object in objects:                              
-            filename = os.path.join(os.path.dirname(__file__), '../output/') + object.name + '_trajectory'
-            np.save(filename, np.array(object.store_position), True)        
+            if object.name != 'sun':
+                filename = os.path.join(os.path.dirname(__file__), '../output/') + object.name + '_trajectory'
+                np.save(filename, np.array(object.store_position), True)        

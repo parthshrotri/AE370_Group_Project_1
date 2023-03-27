@@ -3,12 +3,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def plot_traj(bodies: list, days=20*365):
+def plot_traj(bodies: list, days=20*365, plot_true=True):
     planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
     
     fig = plt.figure(figsize=(8, 10), tight_layout=True)
     ax = fig.add_subplot( 111 , projection = '3d')
     for body in bodies:
+        if body in planet_list and plot_true:
+            true_trajectory = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files', body + '_trajectory.npy'))
+            x_true = true_trajectory[:days+1,0]*1000
+            y_true = true_trajectory[:days+1,1]*1000
+            z_true = true_trajectory[:days+1,2]*1000
+            ax.plot3D(x_true, y_true, z_true,'-',label=body + ' True Trajectory')
         appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', body + '_trajectory.npy'))
         x = appx_trajectory[:,0]
         y = appx_trajectory[:,1]
@@ -19,12 +25,7 @@ def plot_traj(bodies: list, days=20*365):
             ax.plot3D(x,y,z,'-')
 
         ufinal = np.array([x[-1],y[-1],z[-1]])
-        if body in planet_list:
-            true_trajectory = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files', body + '_trajectory.npy'))
-            x_true = true_trajectory[:days+1,0]*1000
-            y_true = true_trajectory[:days+1,1]*1000
-            z_true = true_trajectory[:days+1,2]*1000
-            ax.plot3D(x_true, y_true, z_true,'-',label=body + ' True Trajectory')
+        
             
     ax.plot3D(0, 0, 0, '.', label='Sun', color='blue')
     ax.set_xlabel('$x$')
@@ -54,5 +55,9 @@ def error(bodies: list, days=20*365):
     return err_vals
 
 if __name__ == '__main__':
-    plot_traj(['asteroid_' + str(i) for i in range(30)])
-# plot(['earth', 'jwst'])
+    bodies = ['asteroid_' + str(i) for i in range(5)]
+    # bodies = []
+    bodies.append('jupiter')
+    bodies.append('earth')
+    bodies.append('saturn')
+    plot_traj(bodies, 365, plot_true=False)

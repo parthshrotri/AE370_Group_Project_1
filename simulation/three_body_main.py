@@ -12,10 +12,10 @@ def three_body_problem(days = 30, dt = 60, plt = False):
         os.path.join(os.path.dirname(__file__), '..')))
 
     seconds_per_day = 24*60*60
-    earth_pos = np.array([-2.600745330322259E+10,  1.326237828764555E+11,  5.752511716959091E+10])
-    earth_vel = np.array([-2.983800155786667E+04, -4.724379075830139E+03, -2.047849455589723E+03,])*seconds_per_day
-    moon_pos = np.array([-2.637093499608123E+10, 1.327648230502377E+11, 5.761337388984415E+10])
-    moon_vel = np.array([-3.024279048864922E+04, -5.494701852227165E+03, -2.445635834561632E+03])*seconds_per_day
+    earth_pos = prop.earth_initial_position
+    earth_vel = prop.earth_initial_velocity*seconds_per_day
+    moon_pos = prop.moon_initial_position
+    moon_vel = prop.moon_initial_velocity*seconds_per_day
 
     # Define system bodies
     sun = Body(prop.mass_sun, np.array([[0, 0, 0], [0, 0, 0], [0, 0, 0]]), False, 'sun')
