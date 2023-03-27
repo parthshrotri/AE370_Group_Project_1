@@ -1,5 +1,5 @@
 import glob, os
-import time
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
@@ -21,17 +21,17 @@ fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
 pts_per_frame = 1000
 
-def animator(num, body_names, trajectories):
+def animator(num, body_names, trajectories, graph_limits):
     ax.clear()
-    ax.set_xticks(np.linspace(-2E11, 6E11, 9).tolist())
-    ax.set_yticks(np.linspace(-2E11, 8E11, 11).tolist())
-    ax.set_zticks(np.linspace(-0.5E11, 2.5E11, 7).tolist())
+    ax.set_xticks(np.arange(graph_limits[0][0], graph_limits[0][1], 1E11).tolist())
+    ax.set_yticks(np.arange(graph_limits[1][0], graph_limits[1][1], 1E11).tolist())
+    ax.set_zticks(np.arange(graph_limits[2][0], graph_limits[2][1], 1E11).tolist())
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z', rotation = 0)
-    ax.set_xlim(-2E11, 6E11)
-    ax.set_ylim(-2E11, 8E11)
-    ax.set_zlim(-1E11, 3E11)
+    ax.set_xlim(graph_limits[0][0], graph_limits[0][1])
+    ax.set_ylim(graph_limits[1][0], graph_limits[1][1])
+    ax.set_zlim(graph_limits[2][0], graph_limits[2][1])
     for body_name in body_names:
         x_body = trajectories[body_name][0:num*pts_per_frame+1][:,0]
         y_body = trajectories[body_name][0:num*pts_per_frame+1][:,1]
@@ -42,5 +42,11 @@ def animator(num, body_names, trajectories):
 
 body_names, trajectories = get_trajectories_of_bodies()
 N = trajectories[body_names[0]].shape[0]
-animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories), frames = N//pts_per_frame, interval=1, repeat=False)
+x_all, y_all, z_all = [], [], []
+for body_name in body_names:
+    x_all = x_all + trajectories[body_name][:, 0].tolist()
+    y_all = y_all + trajectories[body_name][:, 1].tolist()
+    z_all = z_all + trajectories[body_name][:, 2].tolist()
+graph_limits = [[0.5E11 * math.floor(1.2*min(x_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(x_all)/0.5E11)], [0.5E11 * math.floor(1.2*min(y_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(y_all)/0.5E11)], [0.5E11 * math.floor(1.2*min(z_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(z_all)/0.5E11)]]
+animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories, graph_limits), frames = N//pts_per_frame, interval=1, repeat=False)
 animation.save(os.path.join(directory, 'plots and graphs', 'orbits.gif'), writer='Pillow', fps=100)
