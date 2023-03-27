@@ -58,7 +58,7 @@ class Simulator:
         # print(object.get_acceleration())
         object.store_position.append(p.tolist())
         
-    def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float) -> None:
+    def rk4_ivp(self, objects:list, t_start:float, t_end:float, t_step:float, save_folder:str='../output/') -> None:
         ''' Perform the RK4 algorithm for a system of objects
         
         Args:
@@ -92,14 +92,17 @@ class Simulator:
                     objects[i].store_position.append(position)
             t += t_step
         
-        path = os.path.join(os.path.dirname(__file__), '../output/')
-        test=os.listdir(path)
+        path = os.path.join(os.path.dirname(__file__), save_folder)
+        if os.path.exists(path) == False:
+            os.mkdir(path)
+        else:
+            test=os.listdir(path)
 
-        for item in test:
-            if item.endswith(".npy"):
-                os.remove(os.path.join(path, item))    
+            for item in test:
+                if item.endswith(".npy"):
+                    os.remove(os.path.join(path, item))    
                    
         for object in objects:                              
             if object.name != 'sun':
-                filename = os.path.join(os.path.dirname(__file__), '../output/') + object.name + '_trajectory'
+                filename = os.path.join(os.path.dirname(__file__), save_folder) + object.name + '_trajectory'
                 np.save(filename, np.array(object.store_position), True)        

@@ -3,6 +3,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+from tqdm import tqdm
 
 directory = os.path.join(os.path.dirname(__file__),'..', 'output')
 
