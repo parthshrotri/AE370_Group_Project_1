@@ -1,9 +1,10 @@
 import glob, os
-import time
+import math
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from tqdm import tqdm
+import time
 
 def get_trajectories_of_bodies(directory):
     os.chdir(directory)
@@ -18,19 +19,19 @@ def get_trajectories_of_bodies(directory):
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
-pts_per_frame = 1000
+pts_per_frame = 10000
 
-def animator(num, body_names, trajectories):
+def animator(num, body_names, trajectories, graph_limits):
     ax.clear()
-    ax.set_xticks(np.linspace(-2E11, 6E11, 9).tolist())
-    ax.set_yticks(np.linspace(-2E11, 8E11, 11).tolist())
-    ax.set_zticks(np.linspace(-0.5E11, 2.5E11, 7).tolist())
+    ax.set_xticks(np.arange(graph_limits[0][0], graph_limits[0][1], 1E11).tolist())
+    ax.set_yticks(np.arange(graph_limits[1][0], graph_limits[1][1], 1E11).tolist())
+    ax.set_zticks(np.arange(graph_limits[2][0], graph_limits[2][1], 1E11).tolist())
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_zlabel('z', rotation = 0)
-    ax.set_xlim(-2E11, 6E11)
-    ax.set_ylim(-2E11, 8E11)
-    ax.set_zlim(-1E11, 3E11)
+    ax.set_xlim(graph_limits[0][0], graph_limits[0][1])
+    ax.set_ylim(graph_limits[1][0], graph_limits[1][1])
+    ax.set_zlim(graph_limits[2][0], graph_limits[2][1])
     for body_name in body_names:
         x_body = trajectories[body_name][0:num*pts_per_frame+1][:,0]
         y_body = trajectories[body_name][0:num*pts_per_frame+1][:,1]

@@ -35,11 +35,11 @@ def plot_traj(bodies: list, days=20*365, plot_true=True, save_folder='with_jupit
     ax.legend()
     plt.show()
 
-def error(bodies: list, days=20*365):
+def error(bodies: list, file_loc: str, days=20*365):
     planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
     err_vals = []
     for body in bodies:
-        appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', body + '_trajectory.npy'))
+        appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', file_loc,  body + '_trajectory.npy'))
         x = appx_trajectory[:,0]
         y = appx_trajectory[:,1]
         z = appx_trajectory[:,2]
