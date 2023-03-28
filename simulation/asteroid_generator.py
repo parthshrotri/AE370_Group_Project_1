@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath(
 from dynamics.body import Body
 from properties import prop
 
-num_asteroids = 5
+num_asteroids = 500
 average_orbit_distance_jupiter = 778E9 # distance in m from sun
 average_orbit_distance_saturn = 1400E9 # Distance from sun in m
 asteroid_pos_distribution = 0.2
@@ -19,7 +19,7 @@ asteroid_pos_min = 0.125
 asteroid_nominal_speed = 18000 # Nominal speed in m/s
 asteroid_speed_distribution = 0.2
 phi_range = 70
-asteroid_velocity_xy_distribution = 0.5 # Velocity direction modifier range for x and y
+asteroid_velocity_xy_distribution = 2 # Velocity direction modifier range for x and y
 asteroid_velocity_z_distribution = 0.25 # Direction modifier range for z
 asteroid_average_mass = 4.6E17 # Mass of Chicxulub asteroid 
 asteroid_mass_distribution = 1 # Asteroid mass distribution range

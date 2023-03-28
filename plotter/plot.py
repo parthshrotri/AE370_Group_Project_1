@@ -57,9 +57,14 @@ def error(bodies: list, days=20*365):
 if __name__ == '__main__':
     bodies = ['asteroid_' + str(i) for i in range(5)]
     # bodies = []
+    bodies.append('mercury')
+    bodies.append('venus')
     bodies.append('jupiter')
     bodies.append('earth')
     bodies.append('saturn')
+    bodies.append('mars')
+    bodies.append('uranus')
+    bodies.append('neptune')
     plot_traj(bodies, 365, plot_true=False)
     bodies.remove('jupiter')
     plot_traj(bodies, 365, plot_true=False, save_folder='without_jupiter')

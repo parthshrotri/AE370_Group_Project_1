@@ -5,14 +5,12 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from tqdm import tqdm
 
-directory = os.path.join(os.path.dirname(__file__),'..', 'output', 'without_jupiter')
-
-def get_trajectories_of_bodies():
+def get_trajectories_of_bodies(directory):
     os.chdir(directory)
     body_names = []
     appx_trajectories = {}
     for file in glob.glob("*.npy"):
-        appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', file))
+        appx_trajectory = np.load(os.path.join(directory, file))
         body = file.replace('_trajectory.npy', '')
         body_names.append(body)
         appx_trajectories[body] = appx_trajectory
@@ -20,7 +18,7 @@ def get_trajectories_of_bodies():
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
-pts_per_frame = 10000
+pts_per_frame = 1000
 
 def animator(num, body_names, trajectories):
     ax.clear()
@@ -41,9 +39,27 @@ def animator(num, body_names, trajectories):
     ax.plot3D(0, 0, 0, '.', label='Sun', color='blue')
     ax.legend()
 
-start_time = time.time()
-body_names, trajectories = get_trajectories_of_bodies()
-N = trajectories[body_names[0]].shape[0]
-animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories), frames = N//pts_per_frame, interval=1, repeat=False)
-animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter.gif'), writer='Pillow', fps=100)
-print(time.time() - start_time)
+def run(with_jupiter: bool):
+    start_time = time.time()
+    str = ''
+    if with_jupiter:
+        str = 'with_jupiter'
+    else:
+        str = 'without_jupiter'
+    directory = os.path.join(os.path.dirname(__file__),'..', 'output', str)
+
+    body_names, trajectories = get_trajectories_of_bodies(directory)
+    N = trajectories[body_names[0]].shape[0]
+    print(N)
+    animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories), frames = N//pts_per_frame, interval=1, repeat=False)
+    
+    if with_jupiter:
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_with_jupiter.gif'), writer='Pillow', fps=100)
+    else: 
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter.gif'), writer='Pillow', fps=100)
+    
+    print(time.time() - start_time)
+
+if __name__ == '__main__':
+    run(True)
+    run(False)
