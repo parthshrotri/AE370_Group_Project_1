@@ -15,7 +15,8 @@ class Body():
     name = ''
     def __init__(self, body_mass, state, calculate_forces=True, name='Body'):
         self.body_mass = body_mass
-        self.state = state
+        self.state = np.copy(state)
+        self.initial_state = np.copy(state)
         self.calculate_forces = calculate_forces
         self.store_position = []
         self.name = name
@@ -89,3 +90,7 @@ class Body():
         
     def set_acceleration(self, acceleration):
         self.state[2] = acceleration
+    
+    def reset(self):
+        self.state = np.copy(self.initial_state)
+        self.store_position = []

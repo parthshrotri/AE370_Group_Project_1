@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def plot_traj(bodies: list, file_loc: str, days=20*365, plot_true=True):
+def plot_traj(bodies: list, days=20*365, plot_true=True, save_folder='with_jupiter'):
     planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
     
     fig = plt.figure(figsize=(8, 10), tight_layout=True)
@@ -15,7 +15,7 @@ def plot_traj(bodies: list, file_loc: str, days=20*365, plot_true=True):
             y_true = true_trajectory[:days+1,1]*1000
             z_true = true_trajectory[:days+1,2]*1000
             ax.plot3D(x_true, y_true, z_true,'-',label=body + ' True Trajectory')
-        appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', file_loc, body + '_trajectory.npy'))
+        appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', save_folder, body + '_trajectory.npy'))
         x = appx_trajectory[:,0]
         y = appx_trajectory[:,1]
         z = appx_trajectory[:,2]
@@ -57,7 +57,14 @@ def error(bodies: list, file_loc: str, days=20*365):
 if __name__ == '__main__':
     bodies = ['asteroid_' + str(i) for i in range(5)]
     # bodies = []
+    bodies.append('mercury')
+    bodies.append('venus')
     bodies.append('jupiter')
     bodies.append('earth')
     bodies.append('saturn')
+    bodies.append('mars')
+    bodies.append('uranus')
+    bodies.append('neptune')
     plot_traj(bodies, 365, plot_true=False)
+    bodies.remove('jupiter')
+    plot_traj(bodies, 365, plot_true=False, save_folder='without_jupiter')
