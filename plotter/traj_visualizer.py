@@ -19,7 +19,7 @@ def get_trajectories_of_bodies(directory):
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
-pts_per_frame = 10000
+pts_per_frame = 1000
 
 def animator(num, body_names, trajectories, graph_limits):
     ax.clear()
@@ -51,15 +51,22 @@ def run(with_jupiter: bool):
 
     body_names, trajectories = get_trajectories_of_bodies(directory)
     N = trajectories[body_names[0]].shape[0]
-    print(N)
-    animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories), frames = N//pts_per_frame, interval=1, repeat=False)
+    x_all, y_all, z_all = [], [], []
+    for body_name in body_names:
+        x_all = x_all + trajectories[body_name][:, 0].tolist()
+        y_all = y_all + trajectories[body_name][:, 1].tolist()
+        z_all = z_all + trajectories[body_name][:, 2].tolist()
+    graph_limits = [[0.5E11 * math.floor(1.2*min(x_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(x_all)/0.5E11)], 
+                    [0.5E11 * math.floor(1.2*min(y_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(y_all)/0.5E11)], 
+                    [0.5E11 * math.floor(1.2*min(z_all)/0.5E11), 0.5E11 * math.ceil(1.2*max(z_all)/0.5E11)]]
+    animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories, graph_limits), frames = N//pts_per_frame, interval=1, repeat=False)
     
     if with_jupiter:
-        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_with_jupiter.gif'), writer='Pillow', fps=100)
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_with_jupiter.gif'), writer='Pillow', fps=75)
     else: 
-        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter.gif'), writer='Pillow', fps=100)
-    
-    print(time.time() - start_time)
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter.gif'), writer='Pillow', fps=75)
+    runtime = time.time() - start_time
+    print(f'Runtime: {runtime:.2f} seconds')
 
 if __name__ == '__main__':
     run(True)

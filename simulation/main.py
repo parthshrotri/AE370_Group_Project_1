@@ -11,8 +11,8 @@ from dynamics.body import Body
 from properties import prop
 
 seconds_per_day = 24*60*60
-days = 365
-dt = 200
+days = 365*3
+dt = 10000
 
 # Define system bodies
 sun = Body(prop.mass_sun, np.array([[0, 0, 0], [0, 0, 0], [0, 0, 0]]), False, 'sun')
@@ -28,7 +28,7 @@ neptune = Body(prop.mass_neptune, np.array([prop.neptune_initial_position, prop.
 system_bodies = [sun, earth, mercury, venus, mars, jupiter, saturn, uranus, neptune]
 
 # Asteroid generation
-num_asteroids = 30
+num_asteroids = 15
 
 asteroid_masses = np.array(np.load(os.path.join(os.path.dirname(__file__), '..', 'data', 'asteroids', 'asteroid_masses.npy')))
 asteroids_init_pos = np.array(np.load(os.path.join(os.path.dirname(__file__), '..', 'data', 'asteroids', 'asteroids_init_pos.npy')))

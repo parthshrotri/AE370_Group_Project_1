@@ -3,23 +3,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-def plot_traj(bodies: list, days=20*365, plot_true=True, save_folder='with_jupiter'):
-    planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
+def plot_traj(bodies: list, 
+              days=20*365, 
+              plot_true=True, 
+              save_folder='with_jupiter', 
+              use_ground_truth:list=['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']):
     
     fig = plt.figure(figsize=(8, 10), tight_layout=True)
     ax = fig.add_subplot( 111 , projection = '3d')
     for body in bodies:
-        if body in planet_list and plot_true:
+        if body in use_ground_truth and plot_true:
             true_trajectory = np.load(os.path.join(os.path.dirname(__file__), '../data/npy_files', body + '_trajectory.npy'))
             x_true = true_trajectory[:days+1,0]*1000
             y_true = true_trajectory[:days+1,1]*1000
             z_true = true_trajectory[:days+1,2]*1000
             ax.plot3D(x_true, y_true, z_true,'-',label=body + ' True Trajectory')
         appx_trajectory = np.load(os.path.join(os.path.dirname(__file__), '..','output', save_folder, body + '_trajectory.npy'))
+        # print(appx_trajectory.shape)
         x = appx_trajectory[:,0]
         y = appx_trajectory[:,1]
         z = appx_trajectory[:,2]
-        if not body.startswith('asteroid'):
+        if not body.startswith('asteroid') and not body in use_ground_truth:
             ax.plot3D(x,y,z,'-',label= body + ' Approximated Trajectory')
         else:
             ax.plot3D(x,y,z,'-')
@@ -33,7 +37,7 @@ def plot_traj(bodies: list, days=20*365, plot_true=True, save_folder='with_jupit
     ax.set_zlabel('$z$')
     # ax.set_title('Trajectory of )
     ax.legend()
-    plt.show()
+    
 
 def error(bodies: list, file_loc: str, days=20*365):
     planet_list = ['mercury', 'venus','earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'moon']
@@ -55,16 +59,14 @@ def error(bodies: list, file_loc: str, days=20*365):
     return err_vals
 
 if __name__ == '__main__':
-    bodies = ['asteroid_' + str(i) for i in range(5)]
-    # bodies = []
+    bodies = ['asteroid_' + str(i) for i in range(15)]
     bodies.append('mercury')
     bodies.append('venus')
     bodies.append('jupiter')
     bodies.append('earth')
-    bodies.append('saturn')
     bodies.append('mars')
-    bodies.append('uranus')
-    bodies.append('neptune')
-    plot_traj(bodies, 365, plot_true=False)
+    use_ground_truth = ['mercury', 'venus', 'mars', 'saturn', 'uranus', 'neptune', 'moon']
+    plot_traj(bodies, 365, plot_true=True, use_ground_truth=use_ground_truth)
     bodies.remove('jupiter')
-    plot_traj(bodies, 365, plot_true=False, save_folder='without_jupiter')
+    plot_traj(bodies, 365, plot_true=True, save_folder='without_jupiter', use_ground_truth=use_ground_truth)
+    plt.show()
