@@ -63,15 +63,15 @@ def error(bodies: list, file_loc: str, days=20*365):
     return err_vals
 
 if __name__ == '__main__':
-    # bodies = ['asteroid_' + str(i) for i in range(15)]
-    # bodies.append('mercury')
-    # bodies.append('venus')
-    # bodies.append('jupiter')
-    # bodies.append('earth')
-    # bodies.append('mars')
-    bodies = ['moon', 'earth']
+    bodies = ['asteroid_' + str(i) for i in range(15)]
+    bodies.append('mercury')
+    bodies.append('venus')
+    bodies.append('jupiter')
+    bodies.append('earth')
+    bodies.append('mars')
+    # bodies = ['moon', 'earth']
     use_ground_truth = ['mercury', 'venus', 'earth', 'mars', 'saturn', 'uranus', 'neptune', 'moon']
-    plot_traj(bodies, 365, plot_true=True, use_ground_truth=use_ground_truth, save_folder='three_body_test')
-    # bodies.remove('jupiter')
-    # plot_traj(bodies, 365, plot_true=True, save_folder='two_body_test', use_ground_truth=use_ground_truth)
+    plot_traj(bodies, 365, plot_true=True, use_ground_truth=use_ground_truth, save_folder='with_jupiter')
+    bodies.remove('jupiter')
+    plot_traj(bodies, 365, plot_true=True, save_folder='without_jupiter', use_ground_truth=use_ground_truth)
     plt.show()

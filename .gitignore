@@ -2,5 +2,5 @@ output/output.npy
 plotter/__pycache__/
 simulation/__pycache__/
 properties/__pycache__/
-dynamic/__pycache__/
+dynamics/__pycache__/
 output/
