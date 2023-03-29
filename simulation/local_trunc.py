@@ -54,6 +54,7 @@ for delta_t in delta_t_vals:
     ctr += 1
 
 plt.figure()
+plt.plot(delta_t_vals, delta_t_vals**4, '-', label = '$\Delta t^4$')
 plt.plot(delta_t_vals, two_body_errors, '-', label = 'Earth error')
 plt.xscale('log')
 plt.yscale('log')
@@ -63,6 +64,7 @@ plt.title('Local truncation error vs $\Delta$ t for 2-body problem')
 plt.legend()
 
 plt.figure()
+plt.plot(delta_t_vals, delta_t_vals**4, '-', label = '$\Delta t^4$')
 plt.plot(delta_t_vals, earth_three_body_errors, '-', label = 'Earth error')
 plt.plot(delta_t_vals, moon_three_body_errors, '-', label = 'Moon error')
 plt.xscale('log')
