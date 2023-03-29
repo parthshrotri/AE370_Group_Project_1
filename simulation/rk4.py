@@ -66,7 +66,7 @@ class Simulator:
             t_start (float): The start time of the simulation
             t_end (float): The end time of the simulation
             t_step (float): The time step to be used
-            
+            save_folder (str): The folder to save the output to relative to the simulation directory
         Returns:
             None
         '''

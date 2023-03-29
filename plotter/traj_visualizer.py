@@ -6,11 +6,13 @@ from matplotlib.animation import FuncAnimation
 from tqdm import tqdm
 import time
 
-def get_trajectories_of_bodies(directory):
+def get_trajectories_of_bodies(directory, bodies=None):
     os.chdir(directory)
     body_names = []
     appx_trajectories = {}
     for file in glob.glob("*.npy"):
+        if bodies is not None and file.replace('_trajectory.npy', '') not in bodies:
+            continue
         appx_trajectory = np.load(os.path.join(directory, file))
         body = file.replace('_trajectory.npy', '')
         body_names.append(body)
@@ -19,7 +21,7 @@ def get_trajectories_of_bodies(directory):
 
 fig = plt.figure(figsize=(8, 10), tight_layout=True)
 ax = fig.add_subplot(projection = '3d')
-pts_per_frame = 1000
+pts_per_frame = 50000
 
 def animator(num, body_names, trajectories, graph_limits):
     ax.clear()
@@ -49,6 +51,7 @@ def run(with_jupiter: bool):
         str = 'without_jupiter'
     directory = os.path.join(os.path.dirname(__file__),'..', 'output', str)
 
+    body_names = ['mercury', 'venus', 'earth', 'mars', 'jupiter']
     body_names, trajectories = get_trajectories_of_bodies(directory)
     N = trajectories[body_names[0]].shape[0]
     x_all, y_all, z_all = [], [], []
@@ -62,9 +65,9 @@ def run(with_jupiter: bool):
     animation = FuncAnimation(fig, animator, fargs=(body_names, trajectories, graph_limits), frames = N//pts_per_frame, interval=1, repeat=False)
     
     if with_jupiter:
-        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_with_jupiter.gif'), writer='Pillow', fps=75)
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_with_jupiter_fast.gif'), writer='Pillow', fps=60)
     else: 
-        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter.gif'), writer='Pillow', fps=75)
+        animation.save(os.path.join(directory, '../plots and graphs', 'orbits_without_jupiter_fast.gif'), writer='Pillow', fps=60)
     runtime = time.time() - start_time
     print(f'Runtime: {runtime:.2f} seconds')
 

@@ -11,8 +11,8 @@ from dynamics.body import Body
 from properties import prop
 
 seconds_per_day = 24*60*60
-days = 365*3
-dt = 10000
+days = 365*2.5
+dt = 60
 
 # Define system bodies
 sun = Body(prop.mass_sun, np.array([[0, 0, 0], [0, 0, 0], [0, 0, 0]]), False, 'sun')
