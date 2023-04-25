@@ -1,6 +1,16 @@
 # Tool for AnalYsis of ceLestial Orbits using RK4 in Series (TAYLOR Series)
-Developed by Ieun Choo, Richeek Dutta, Myles Gong, Parth Shrotri, and Evan Yu
-University of Illinois Urbana-Champaign Dept. of Aerospace Engineering
+<p align="center">
+Developed by Ieun Choo, Richeek Dutta, Myles Gong, Parth Shrotri, and Evan Yu  
+</p>
+
+<p align="center">
+University of Illinois Urbana-Champaign  
+</p>
+
+<p align="center">
+Dept. of Aerospace Engineering
+</p>
+
 
 # Decription
 The goal of TAYLOR Series is to provide a framework for analyzing celestial orbits using an $n$-body dynamical model. The Tool provides numerical analysis functionality to generate trajectories as well as options for easily plotting the results in a static or animated 3D format.
